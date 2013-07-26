@@ -1,4 +1,5 @@
 [
     { "caption": "Change Mode", "command": "change_mode" },
-    { "caption": "ROS distribute file", "command": "ros_distribute_file" }
+    { "caption": "ROS distribute file", "command": "ros_distribute_file" },
+    { "caption": "ROS target path", "command": "change_ros_path" }
 ]
