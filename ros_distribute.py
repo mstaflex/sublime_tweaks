@@ -2,6 +2,32 @@ import sublime
 import sublime_plugin
 import subprocess
 
+ROS_PATH_KEY = "distribute_target_ros_path.settings"
+MESSAGE_NO_KEY = "There is no API key set yet. Enter a valid key now. You can register for a key under http://words.bighugelabs.com/getkey.php for free."
+
+
+def save_ros_target_path(path):
+    #settings = sublime.Settings()
+    ros_path_settings = sublime.load_settings(ROS_PATH_KEY)
+    ros_path_settings.set("path", path)
+    sublime.save_settings(ROS_PATH_KEY)
+
+
+def get_target_ros_path(user_query=True):
+    ros_path_settings = sublime.load_settings(ROS_PATH_KEY)
+    path = ros_path_settings.get("path", "")
+    if path == "" and user_query:
+        sublime.message_dialog(MESSAGE_NO_KEY)
+        sublime.active_window().show_input_panel("Target ROS path:", "", save_ros_target_path, None, None)
+    return path
+
+
+class ChangeRosPath(sublime_plugin.TextCommand):
+    def run(self, edit):
+        current_path = get_target_ros_path(user_query=False)
+        sublime.active_window().show_input_panel("New ROS target path:", current_path, save_ros_target_path, None, None)
+
+
 
 def distribute(params):
     result = subprocess.call(params.split(' '))
